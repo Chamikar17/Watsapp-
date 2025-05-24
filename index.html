@@ -1,13 +1,17 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ꮇᴀꜰɪᴀ Chat</title>
   <style>
     body {
       margin: 0;
       font-family: sans-serif;
       background-color: #ece5dd;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
     .top-bar {
       background-color: #075E54;
@@ -25,10 +29,11 @@
       margin-left: 10px;
     }
     .chat-area {
-      height: 80vh;
+      flex: 1;
       padding: 10px;
       background: url('https://i.ibb.co/zJrJ8St/wa-bg.jpg');
       background-size: cover;
+      background-position: center;
       overflow-y: auto;
     }
     .message {
@@ -38,6 +43,7 @@
       border-radius: 7.5px;
       max-width: 75%;
       position: relative;
+      word-wrap: break-word;
     }
     .message::after {
       content: "seen";
@@ -54,6 +60,7 @@
       max-width: 75%;
       margin: 10px 0;
       font-style: italic;
+      word-wrap: break-word;
     }
     .input-bar {
       display: flex;
@@ -76,6 +83,34 @@
       padding: 10px 16px;
       margin-left: 10px;
       cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* 📱 Mobile Responsive Styles */
+    @media only screen and (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .chat-area {
+        padding: 5px;
+      }
+      .message, .reply {
+        max-width: 90%;
+        font-size: 14px;
+        padding: 6px 10px;
+      }
+      .input-bar {
+        padding: 8px;
+      }
+      .input-bar input {
+        padding: 8px;
+        font-size: 14px;
+      }
+      .input-bar button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -85,12 +120,16 @@
       <div class="name">Ꮇᴀꜰɪᴀ</div>
       <div class="status">online</div>
     </div>
-  </div>  <div class="chat-area" id="chat">
-    <!-- Messages appear here -->
-  </div>  <div class="input-bar">
+  </div>
+  <div class="chat-area" id="chat">
+    <!-- Messages will appear here -->
+  </div>
+  <div class="input-bar">
     <input type="text" id="msgInput" placeholder="Message"/>
     <button onclick="sendMessage()">➤</button>
-  </div>  <script>
+  </div>
+
+  <script>
     function sendMessage() {
       const chat = document.getElementById("chat");
       const input = document.getElementById("msgInput");
@@ -108,10 +147,18 @@
       setTimeout(() => {
         const botReply = document.createElement("div");
         botReply.className = "reply";
-        botReply.innerText = "Ruply bot: Coming Soon... 🤫";
+        botReply.innerText = "Reply bot: Coming Soon... 🤫";
         chat.appendChild(botReply);
         chat.scrollTop = chat.scrollHeight;
       }, 1000);
     }
-  </script></body>
+
+    // ➕ Enter key support
+    document.getElementById("msgInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
 </html>
