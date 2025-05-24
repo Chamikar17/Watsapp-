@@ -35,6 +35,8 @@
       background-size: cover;
       background-position: center;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column-reverse;
     }
     .message {
       background: #dcf8c6;
@@ -44,6 +46,7 @@
       max-width: 75%;
       position: relative;
       word-wrap: break-word;
+      align-self: flex-end;
     }
     .message::after {
       content: "seen";
@@ -61,6 +64,7 @@
       margin: 10px 0;
       font-style: italic;
       word-wrap: break-word;
+      align-self: flex-start;
     }
     .input-bar {
       display: flex;
@@ -139,22 +143,43 @@
       const userMsg = document.createElement("div");
       userMsg.className = "message";
       userMsg.innerText = msg;
-      chat.insertBefore(userMsg, chat.firstChild); // Inserts message at top
+      chat.prepend(userMsg); // Show at top
 
       input.value = "";
-      // Scroll to the top to show newest message
-      chat.scrollTop = 0;
 
+      // Reply System
       setTimeout(() => {
         const botReply = document.createElement("div");
         botReply.className = "reply";
-        botReply.innerText = "Reply bot Coming Soon... 🤫";
-        chat.insertBefore(botReply, chat.firstChild); // Inserts bot reply at top
-        chat.scrollTop = 0;
-      }, 1000);
+
+        // Commands
+        if (msg === ".menu") {
+          botReply.innerText = ".menu\n\n.alive";
+          
+        } else if (msg === ".alive") {
+          botReply.innerText = "Iam alive now 👋";
+          
+        } else if (msg === ".owner") {
+          botReply.innerText = "👑 Owner: +94767861594";
+          
+        } else if (msg === ".ping") {
+          botReply.innerText = "📋 {ping}";
+          
+        } else if (msg === ".alive") {
+          botReply.innerText = "✅ Bot is Alive!";
+          
+        } else if (msg === ".group") {
+          botReply.innerText = "🔗 Join Group: https://chat.whatsapp.com/Example";
+          
+        } else {
+          botReply.innerText = "🤖 Reply bot: Coming Soon... 🤫";
+        }
+
+        chat.prepend(botReply); // Show reply at top
+      }, 600);
     }
 
-    // ➕ Enter key support
+    // Enter key support
     document.getElementById("msgInput").addEventListener("keypress", function (e) {
       if (e.key === "Enter") {
         sendMessage();
