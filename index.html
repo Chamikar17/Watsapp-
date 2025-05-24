@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ꮇᴀꜰɪᴀ Chat with Reply</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ꮇᴀꜰɪᴀ Chat</title>
   <style>
     body {
       margin: 0;
@@ -45,18 +45,22 @@
       position: relative;
       word-wrap: break-word;
     }
-    .message > .reply {
-      background: white;
-      padding: 6px 10px;
-      border-radius: 7.5px;
-      margin-bottom: 5px;
-      font-style: italic;
-      font-size: 13px;
-      color: #555;
+    .message::after {
+      content: "seen";
+      font-size: 10px;
+      position: absolute;
+      bottom: -14px;
+      right: 10px;
+      color: gray;
     }
-    .message > div:last-child {
-      /* main message text */
-      font-size: 15px;
+    .reply {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 7.5px;
+      max-width: 75%;
+      margin: 10px 0;
+      font-style: italic;
+      word-wrap: break-word;
     }
     .input-bar {
       display: flex;
@@ -81,6 +85,33 @@
       cursor: pointer;
       font-size: 16px;
     }
+
+    /* 📱 Mobile Responsive Styles */
+    @media only screen and (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .chat-area {
+        padding: 5px;
+      }
+      .message, .reply {
+        max-width: 90%;
+        font-size: 14px;
+        padding: 6px 10px;
+      }
+      .input-bar {
+        padding: 8px;
+      }
+      .input-bar input {
+        padding: 8px;
+        font-size: 14px;
+      }
+      .input-bar button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -91,42 +122,43 @@
     </div>
   </div>
   <div class="chat-area" id="chat">
-    <!-- Messages here -->
+    <!-- Messages will appear here -->
   </div>
   <div class="input-bar">
     <input type="text" id="msgInput" placeholder="Message"/>
-    <input type="text" id="replyInput" placeholder="Reply text (optional)" style="margin-left:10px; flex: 0.7; border-radius: 20px; padding: 10px; border: 1px solid #ccc;" />
-    <button id="sendBtn">➤</button>
+    <button onclick="sendMessage()">➤</button>
   </div>
 
-  <script type="module">
-    import { addMessage } from './reply.js';
-
-    const chat = document.getElementById('chat');
-    const msgInput = document.getElementById('msgInput');
-    const replyInput = document.getElementById('replyInput');
-    const sendBtn = document.getElementById('sendBtn');
-
+  <script>
     function sendMessage() {
-      const msg = msgInput.value.trim();
-      const replyText = replyInput.value.trim();
-
+      const chat = document.getElementById("chat");
+      const input = document.getElementById("msgInput");
+      const msg = input.value.trim();
       if (!msg) return;
 
-      addMessage(chat, msg, replyText);
+      const userMsg = document.createElement("div");
+      userMsg.className = "message";
+      userMsg.innerText = msg;
+      chat.insertBefore(userMsg, chat.firstChild); // Inserts message at top
 
-      msgInput.value = "";
-      replyInput.value = "";
-      msgInput.focus();
+      input.value = "";
+      // Scroll to the top to show newest message
+      chat.scrollTop = 0;
 
       setTimeout(() => {
-        addMessage(chat, "Reply bot: Coming Soon... 🤫");
+        const botReply = document.createElement("div");
+        botReply.className = "reply";
+        botReply.innerText = "Reply bot Coming Soon... 🤫";
+        chat.insertBefore(botReply, chat.firstChild); // Inserts bot reply at top
+        chat.scrollTop = 0;
       }, 1000);
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-    msgInput.addEventListener('keypress', e => {
-      if(e.key === 'Enter') sendMessage();
+    // ➕ Enter key support
+    document.getElementById("msgInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
     });
   </script>
 </body>
