@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ꮇᴀꜰɪᴀ Chat</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #ece5dd;
+    }
+    .top-bar {
+      background-color: #075E54;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .top-bar .name {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .top-bar .status {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    .chat-area {
+      height: 80vh;
+      padding: 10px;
+      background: url('https://i.ibb.co/zJrJ8St/wa-bg.jpg');
+      background-size: cover;
+      overflow-y: auto;
+    }
+    .message {
+      background: #dcf8c6;
+      padding: 8px 12px;
+      margin: 10px 0;
+      border-radius: 7.5px;
+      max-width: 75%;
+      position: relative;
+    }
+    .message::after {
+      content: "seen";
+      font-size: 10px;
+      position: absolute;
+      bottom: -14px;
+      right: 10px;
+      color: gray;
+    }
+    .reply {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 7.5px;
+      max-width: 75%;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    .input-bar {
+      display: flex;
+      padding: 10px;
+      background: #f0f0f0;
+      border-top: 1px solid #ddd;
+    }
+    .input-bar input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    .input-bar button {
+      background: #25D366;
+      border: none;
+      color: white;
+      border-radius: 50%;
+      padding: 10px 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div>
+      <div class="name">Ꮇᴀꜰɪᴀ</div>
+      <div class="status">online</div>
+    </div>
+  </div>  <div class="chat-area" id="chat">
+    <!-- Messages appear here -->
+  </div>  <div class="input-bar">
+    <input type="text" id="msgInput" placeholder="Message"/>
+    <button onclick="sendMessage()">➤</button>
+  </div>  <script>
+    function sendMessage() {
+      const chat = document.getElementById("chat");
+      const input = document.getElementById("msgInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "message";
+      userMsg.innerText = msg;
+      chat.appendChild(userMsg);
+
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        const botReply = document.createElement("div");
+        botReply.className = "reply";
+        botReply.innerText = "Ruply bot: Coming Soon... 🤫";
+        chat.appendChild(botReply);
+        chat.scrollTop = chat.scrollHeight;
+      }, 1000);
+    }
+  </script></body>
+</html>
